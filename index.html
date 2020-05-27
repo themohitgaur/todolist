@@ -1,0 +1,178 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>My Todo Application</title>
+    <style>
+        body {
+            font-family: Arial;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            text-align:center;
+            padding: 25px;
+            background-color: lightcyan;
+        }
+        .todo-list {
+            display: flex;
+            flex-direction: column;
+            align-self: center;
+            TEXT-ALIGN: LEFT;
+        }
+        .todo-item {
+            width:500px;
+            background-color:azure;
+            margin:7px;
+            box-shadow: 2px 2px 2px rgba(0,0,0,0, .3);
+            transition: .3 all;
+            padding:15px;
+            align-items:center;
+        }
+         .todo-item:hover {
+             padding: 30px;
+             box-shadow: 2px 2px 8px rgba(0,0,0,0, .3);
+         }
+         .task-title {
+             font-weight:bold;
+             font-size:22px;
+         }
+         .taks-description {
+             margin-top:4px;
+             margin-bottom:4px;
+         }
+         .task-deadline {
+             font-size:12px;
+
+         }
+         .delete-button {
+             color:red;
+             font-size:14px;
+             text-decoration:none;
+             margin-top:12px;
+         }
+        .edit-button {
+            color: red;
+            font-size: 14px;
+            text-decoration: none;
+            margin-top: 12px;
+        }
+        .add-button {
+            margin: 10px;
+            width: 400px;
+            background-color: yellowgreen;
+            border: 0;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.3);
+            ALIGN-SELF: CENTER;
+        }
+        .add-button:hover {
+            background-color:papayawhip;
+            cursor: pointer;
+        }
+        .new-item-form {
+            width: 450px;
+            display: flex;
+            flex-direction: column;
+            margin-top: 40px;
+            ALIGN-SELF: CENTER;
+        }
+        input {
+            margin:5px;
+            padding:12px;
+            border: 1px solid black;
+            border-radius: 4px;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>My Todo List</h1>
+    <div id="todoListElement" class="todo-list">
+    </div>
+    <form class="new-item-form">
+        <h2>Add New Task</h2>
+        <input id="taskTitleInput" type="text" placeholder="Task Title">
+        <input id="taskDescriptionInput" type="text" placeholder="Description">
+        <input id="taskDeadlineInput" type="date" placeholder="Task Deadline">
+    </form>
+    <button class="add-button" onclick="addTask()" >Add Task</button>
+    <script>
+        //array 
+        var todoItems = [1, 2, 3];
+        // JSON
+        var singleTodoItem = {
+            taskTitle: 'Title1',
+            taskDescription: 'Description of first Task',
+            taskDeadline: 'Today'
+        };
+        //array of objects
+        var todoItems = [
+        ];
+
+       
+
+        var todoListElement = document.getElementById("todoListElement");
+        var taskTitleInputElement = document.getElementById("taskTitleInput");
+        var taskDescriptionInputElement = document.getElementById("taskDescriptionInput");
+        var taskDeadlineInputElement = document.getElementById("taskDeadlineInput");
+
+        function addTask() {
+            var taskTitle = taskTitleInputElement.value;
+            var taskDescription = taskDescriptionInputElement.value;
+            var taskDeadline = taskDeadlineInputElement.value;
+
+
+            var newTask = {
+                taskTitle : taskTitle,
+                taskDescription: taskDescription,
+                taskDeadline: taskDeadline,
+            };
+            todoItems.push(newTask);
+
+            render();
+
+            taskTitleInputElement.value = "";
+            taskDescriptionInputElement.value = "";
+            taskDeadlineInputElement.value = "";
+        }
+        function deleteTask(index) {
+            var todoTempList = [];
+            for (var i = 0; i < todoItems.length; i++) {
+                if (i !== index) {
+                    todoTempList.push(todoItems[i]);
+                }
+            }
+            todoItems = todoTempList;
+            render();
+        }
+        function editTask(index) {
+
+            var taskTitleInputElement = document.getElementById("taskTitleInput");
+            var taskDescriptionInputElement = document.getElementById("taskDescriptionInput");
+            var taskDeadlineInputElement = document.getElementById("taskDeadlineInput");
+            taskTitleInputElement.value = todoItems[index].taskTitle;
+            taskDescriptionInputElement.value = todoItems[index].taskDescription;
+            taskDeadlineInputElement.value = todoItems[index].taskDeadline;
+            deleteTask(index);
+         
+        }
+        function render() {
+            var textHtml = "";
+    
+            for (var i = 0; i < todoItems.length; i++) {
+                textHtml += `<div class="todo-item">
+                            <div class="task-title">${todoItems[i].taskTitle}</div>
+                            <div class="task-description">${todoItems[i].taskDescription}</div>
+                            <div class="task-deadline">${todoItems[i].taskDeadline}</div>
+                            <a href="#" class="delete-button" onclick="deleteTask(${i})">Delete</a>
+                            <a href="#" class="edit-button" onclick="editTask(${i})">Edit</a>
+                </div>`;
+            }
+            todoListElement.innerHTML = textHtml;
+        }
+
+    </script>
+
+</body>  
+</html>
